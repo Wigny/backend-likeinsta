@@ -25,4 +25,5 @@ app.use('/files', express.static(
 
 app.use(require('./routes'));
 
-server.listen(3333);
+const porta = process.env.PORT || 8080;
+server.listen(porta);
