@@ -36,5 +36,11 @@ module.exports = {
 
     req.io.emit('post', post);
     return res.json(post);
+  },
+
+  async delete(req, res) {
+    await Post.findByIdAndDelete(req.params.id);
+
+    return res.json({ ok: true });
   }
 }
