@@ -4,8 +4,13 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node dist/index.js",
-    "serve": "tsc-watch --onSuccess \"node dist/index.js\""
+    "serve": "tsc-watch --onSuccess \"node dist/index.js\"",
+    "start": "node dist/index.js",
+    "tsc": "tsc",
+    "postinstall": "yarn tsc"
+  },
+  "engines": {
+    "node": ">=8.6"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.3.0",
