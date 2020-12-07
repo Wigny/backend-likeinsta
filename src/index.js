@@ -1,29 +1,30 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import { createServer } from 'http';
+import socket from 'socket.io';
+import routes from './routes';
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { PORT, MONGODB_URL } = process.env;
 
 const app = express();
+const server = createServer(app);
+const io = socket(server);
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-
-mongoose.connect('mongodb+srv://wigny:almeida@cluster0-dbykn.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect(MONGODB_URL, {
   useNewUrlParser: true,
 });
 
-app.use((req, res, next) => {
-  req.io = io;
+app.use((req, _res, next) => {
+  req.socket = io;
   next();
 });
 
 app.use(cors());
 
-app.use('/files', express.static(
-  path.resolve(__dirname, '..', 'uploads', 'resized')
-));
+app.use(routes);
 
-app.use(require('./routes'));
-
-const porta = process.env.PORT || 8080;
-server.listen(porta);
+server.listen(PORT || 8080);
